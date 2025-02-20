@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<artifact type="SNL Mesh"
+          xmlns="http://www-irn.sandia.gov/schema/dart/3.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www-irn.sandia.gov/schema/dart/3.0 http://www-irn.sandia.gov/schema/dart/3.0/DARTMetadata.xsd">
+  <mesh>
+    <metadata-source application="CUBIT" application-version="2024.3" last-modified-date="Mon Mar 4 17:28:41 2024 +0000"/>
+    <file format="Exodus" href="//wsl.localhost/Ubuntu/home/zzs/projects/raw/problems/heat_wall3.e"/>
+    <sideset-description id="1" name="outer" />
+    <sideset-description id="2" name="inner" />
+  </mesh>
+</artifact>
