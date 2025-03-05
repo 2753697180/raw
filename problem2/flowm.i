@@ -1,9 +1,9 @@
 T_in = 300. # K
-m_dot_in = 1e-2 # kg/s
+m_dot_in = 0.05 # kg/s
 press = 10e5 # Pa
 
 [GlobalParams]
-  initial_p = ${press}
+  initial_p = ${press} 
   initial_vel = 0.0001
   initial_T = ${T_in}
   gravity_vector = '0 0 0'
@@ -142,9 +142,6 @@ press = 10e5 # Pa
 [Outputs]
   file_base=sub
   exodus = true
-  [csv]
-    type = CSV
-  []
   [console]
     type = Console
     max_rows = 1

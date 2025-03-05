@@ -24,7 +24,7 @@ PackedColumn::validParams()
       "The density ($\\mu$) of the fuel in kg/m^3, the default is for water at 30 degrees C.");
   params.addParam<Real>(
       "thermal_conductivity",
-       0.0250,
+       25,
       "The thermal_conductivity($\\mu$) of the fuel in W/(m*K), the default is for water at 30 degrees C.");
   params.addParam<Real>(
       "specific_heat",
