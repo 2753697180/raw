@@ -1,10 +1,9 @@
 T_in = 300. # K
-m_dot_in = 0.05 # kg/s
-press = 10e5 # Pa
-
+m_dot_in = 0.01 # kg/s
+press = 1e5 # Pa
 [GlobalParams]
   initial_p = ${press} 
-  initial_vel = 0.0001
+  initial_vel = 0.01
   initial_T = ${T_in}
   gravity_vector = '0 0 0'
   rdg_slope_reconstruction = minmod
@@ -28,13 +27,13 @@ press = 10e5 # Pa
 []
 [AuxVariables]
   [Hw]
-    family = monomial
-    order = constant
+    family = MONOMIAL
+    order = CONSTANT
     block = core_chan
   []
   [T_wall]
-    family=monomial
-    order = constant
+    family=LAGRANGE
+    order = FIRST
     block = core_chan
   []
 []
@@ -56,19 +55,15 @@ press = 10e5 # Pa
     type = FlowChannel1Phase
     position = '0 0 0'
     orientation = '0 0 1'
-    length = ${units 1000 mm -> m}
+    length = 1
     n_elems = 25
-    A = 7.2548e-3             
-    D_h = 7.0636e-2
+    A = 7.85e-5             
+    D_h = 3.14e-2
   []
   [core_bc]
-    type= HeatTransferFromExternalAppTemperature1Phase
+    type=HeatTransferFromHeatFlux1Phase
     flow_channel= 'core_chan'
-    Hw = 1000
-    P_hf = 6.28319e-01
-    initial_T_wall = 300.
-    var_type = elemental
-    T_ext= T_wall
+    q_wall= 1000
   []
   [outlet]
     type = Outlet1Phase
@@ -90,39 +85,37 @@ press = 10e5 # Pa
     num_layers = 25
     block = core_chan
   []
-  [T_wall]
-    type = LayeredAverage
-    direction = z
-    variable = T_wall
-    num_layers = 25
-    block = core_chan
-  []
 []
 [Postprocessors]
-  [T_avg]
-    type = ElementAverageValue
+  [T_1]
+    type = PointValue
     variable = T
+    point='0 0 1'
     execute_on = 'INITIAL TIMESTEP_END'
   []  
-  [htc_avg]
-    type = ElementAverageValue
+  [htc_1]
+    type =  PointValue
     variable = Hw
+    point='0 0 1'
     execute_on = 'INITIAL TIMESTEP_END'
   []
-  [T_wall_avg]
-    type = ElementAverageValue
-    variable = T_wall
+  [htc_0]
+    type =  PointValue
+    variable = Hw
+    point='0 0 0'
     execute_on = 'INITIAL TIMESTEP_END'
   []
+  [T_0]
+    type = PointValue
+    variable = T
+    point='0 0 0'
+    execute_on = 'INITIAL TIMESTEP_END'
+  [] 
 []
 [VectorPostprocessors]
   [T_uo_p]
     type = SpatialUserObjectVectorPostprocessor
     userobject = T_uo
-  []
-  [T_wall_p]
-    type = SpatialUserObjectVectorPostprocessor
-    userobject = T_wall
   []
 []
 [Executioner]
@@ -130,9 +123,9 @@ press = 10e5 # Pa
   solve_type = PJFNK
   line_search = basic
   start_time = -1
-  end_time =10
-  dt = 0.5
-  dtmin=1e-7
+  end_time =1
+  dt = 0.01
+  dtmin=1e-4
   petsc_options_iname = '-pc_type'
   petsc_options_value = 'lu'
   nl_rel_tol = 1e-8

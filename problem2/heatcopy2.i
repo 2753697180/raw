@@ -17,9 +17,8 @@
     initial_condition = '300'
   []
   [htcp]
-    family = LAGRANGE
-    order = FIRST
-    initial_condition = '150'
+    family = MONOMIAL
+    order = CONSTANT
   []
 []
 
@@ -91,23 +90,6 @@
   []
 []
 
-[Postprocessors]
-  [T_wall_source]
-    type = SideAverageValue
-    boundary = '2'
-    variable = 'T'
-  []
-  [T_fluid_parent]
-    type = SideAverageValue
-    boundary = '2'
-    variable = 'T_fluid'
-  []
-  [htcp]
-    type = SideAverageValue
-    boundary = '2'
-    variable = 'htcp'
-  []
-[]
 
 [VectorPostprocessors]
   [T_fluid_vpp]
@@ -127,9 +109,9 @@
   automatic_scaling = true
   petsc_options_iname = '-pc_type -pc_hypre_type'
   petsc_options_value = 'hypre boomeramg'
-  end_time = 20
+  end_time = 5
   dt = 0.5
-  dtmin = 1e-7
+  dtmin = 1e-4
   start_time = -1
   steady_state_tolerance = 1e-5
   steady_state_detection = true
