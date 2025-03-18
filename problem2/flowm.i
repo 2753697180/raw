@@ -1,15 +1,14 @@
 T_in = 300. # K
-m_dot_in = 0.01 # kg/s
+m_dot_in = 0.001# kg/s
 press = 1e5 # Pa
 [GlobalParams]
   initial_p = ${press} 
-  initial_vel = 0.01
   initial_T = ${T_in}
+  initial_vel=0.
   gravity_vector = '0 0 0'
   rdg_slope_reconstruction = minmod
   scaling_factor_1phase = '1 1e-2 1e-4'
   closures = thm_closures
-  fp = he
 []
 [FluidProperties]
   [he]
@@ -23,6 +22,7 @@ press = 1e5 # Pa
 [Closures]
   [thm_closures]
     type = Closures1PhaseTHM
+    wall_ff_closure=churchill
   []
 []
 [AuxVariables]
@@ -31,14 +31,9 @@ press = 1e5 # Pa
     order = CONSTANT
     block = core_chan
   []
-  [T_wall]
-    family=LAGRANGE
-    order = FIRST
-    block = core_chan
-  []
 []
 [AuxKernels]
-  [Hw_ak]
+  [hw]
     type = ADMaterialRealAux
     variable = Hw
     property = 'Hw'
@@ -49,7 +44,8 @@ press = 1e5 # Pa
     type = InletMassFlowRateTemperature1Phase
     input = 'core_chan:in'
     m_dot = ${m_dot_in}
-    T = ${T_in}
+    T = 300
+    reversible=false
   []
   [core_chan]
     type = FlowChannel1Phase
@@ -58,12 +54,13 @@ press = 1e5 # Pa
     length = 1
     n_elems = 25
     A = 7.85e-5             
-    D_h = 3.14e-2
+    D_h = 0.01
+    fp = he
   []
   [core_bc]
-    type=HeatTransferFromHeatFlux1Phase
+    type=HeatTransferFromSpecifiedTemperature1Phase
     flow_channel= 'core_chan'
-    q_wall= 1000
+    T_wall= 500
   []
   [outlet]
     type = Outlet1Phase
@@ -87,44 +84,44 @@ press = 1e5 # Pa
   []
 []
 [Postprocessors]
-  [T_1]
+  [T_out]
     type = PointValue
     variable = T
     point='0 0 1'
     execute_on = 'INITIAL TIMESTEP_END'
   []  
-  [htc_1]
-    type =  PointValue
-    variable = Hw
-    point='0 0 1'
+  [Q_W]
+    type =  ADHeatRateConvection1Phase
+    P_hf= 0.0314159
     execute_on = 'INITIAL TIMESTEP_END'
+    T=T
+    T_wall=500
+    block = core_chan
   []
-  [htc_0]
-    type =  PointValue
-    variable = Hw
-    point='0 0 0'
-    execute_on = 'INITIAL TIMESTEP_END'
-  []
-  [T_0]
+  [T_in]
     type = PointValue
     variable = T
     point='0 0 0'
     execute_on = 'INITIAL TIMESTEP_END'
   [] 
-[]
-[VectorPostprocessors]
-  [T_uo_p]
-    type = SpatialUserObjectVectorPostprocessor
-    userobject = T_uo
+  [average]
+    type = ElementAverageValue
+    variable = T
+  []
+  [hw_out]
+    type = PointValue
+    variable = Hw
+    point='0 0 1'
+    execute_on = 'INITIAL TIMESTEP_END'
   []
 []
 [Executioner]
   type = Transient
   solve_type = PJFNK
   line_search = basic
-  start_time = -1
-  end_time =1
-  dt = 0.01
+  start_time = 0
+  end_time =0.1
+  dt = 0.001
   dtmin=1e-4
   petsc_options_iname = '-pc_type'
   petsc_options_value = 'lu'
@@ -133,7 +130,6 @@ press = 1e5 # Pa
   nl_max_its = 25
 []
 [Outputs]
-  file_base=sub
   exodus = true
   [console]
     type = Console
