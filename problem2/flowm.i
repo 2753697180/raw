@@ -1,6 +1,6 @@
 T_in = 300. # K
 m_dot_in = 0.001# kg/s
-press = 1e5 # Pa
+press = 10e5 # Pa
 [GlobalParams]
   initial_p = ${press} 
   initial_T = ${T_in}
@@ -22,7 +22,6 @@ press = 1e5 # Pa
 [Closures]
   [thm_closures]
     type = Closures1PhaseTHM
-    wall_ff_closure=churchill
   []
 []
 [AuxVariables]
@@ -45,7 +44,6 @@ press = 1e5 # Pa
     input = 'core_chan:in'
     m_dot = ${m_dot_in}
     T = 300
-    reversible=false
   []
   [core_chan]
     type = FlowChannel1Phase
@@ -92,18 +90,51 @@ press = 1e5 # Pa
   []  
   [Q_W]
     type =  ADHeatRateConvection1Phase
-    P_hf= 0.0314159
-    execute_on = 'INITIAL TIMESTEP_END'
-    T=T
-    T_wall=500
     block = core_chan
+    P_hf = 0.0314
   []
-  [T_in]
+  [T_in_8]
+    type = PointValue
+    variable = T
+    point='0 0 0.08'
+    execute_on = 'INITIAL TIMESTEP_END'
+  []  
+  [T_in_6]
+    type = PointValue
+    variable = T
+    point='0 0 0.06'
+    execute_on = 'INITIAL TIMESTEP_END'
+  [] 
+  [T_in_0]
     type = PointValue
     variable = T
     point='0 0 0'
     execute_on = 'INITIAL TIMESTEP_END'
+  []
+  [T_in_4]
+    type = PointValue
+    variable = T
+    point='0 0 0.04'
+    execute_on = 'INITIAL TIMESTEP_END'
+  []
+  [T_in_25]
+    type = PointValue
+    variable = T
+    point='0 0 0.025'
+    execute_on = 'INITIAL TIMESTEP_END'
+  []
+  [T_in_3]
+    type = PointValue
+    variable = T
+    point='0 0 0.03'
+    execute_on = 'INITIAL TIMESTEP_END'
   [] 
+  [T_in_2]
+    type = PointValue
+    variable = T
+    point='0 0 0.02'
+    execute_on = 'INITIAL TIMESTEP_END'
+  []
   [average]
     type = ElementAverageValue
     variable = T
@@ -113,6 +144,11 @@ press = 1e5 # Pa
     variable = Hw
     point='0 0 1'
     execute_on = 'INITIAL TIMESTEP_END'
+  []
+  [core_T_in]
+    type = SideAverageValue
+    boundary = core_chan:in
+    variable = T
   []
 []
 [Executioner]
@@ -137,4 +173,5 @@ press = 1e5 # Pa
     outlier_variable_norms = false
   []
   print_linear_residuals = false
-[]
+[]  
+
