@@ -7,28 +7,28 @@
 //* Licensed under LGPL 2.1, please see LICENSE for details
 //* https://www.gnu.org/licenses/lgpl-2.1.html
 
-#include "PackedColumn.h"
+#include "fuel.h"
 #include "Function.h"
 
-registerMooseObject("rawApp", PackedColumn);
+registerMooseObject("rawApp", fuel);
 
 InputParameters
-PackedColumn::validParams()
+fuel::validParams()
 {
   InputParameters params = Material::validParams();
 
   // Parameter for radius of the spheres used to interpolate permeability.
   params.addParam<Real>(
       "density",
-       9550,
+       10000,
       "The density ($\\mu$) of the fuel in kg/m^3, the default is for water at 30 degrees C.");
   params.addParam<Real>(
       "thermal_conductivity",
-       25,
+       70,
       "The thermal_conductivity($\\mu$) of the fuel in W/(m*K), the default is for water at 30 degrees C.");
   params.addParam<Real>(
       "specific_heat",
-      235.0,
+       200,
       "The specific_heat ($\\mu$) of the fuel in J/(kg*K) , the default is for water at 30 degrees C.");
   
 
@@ -36,16 +36,13 @@ PackedColumn::validParams()
   return params;
 }
 
-PackedColumn::PackedColumn(const InputParameters & parameters)
+fuel::fuel(const InputParameters & parameters)
   : Material(parameters),
 
     // Get the parameters from the input file
     _input_density(getParam<Real>("density")),
     _input_thermal_conductivity(getParam<Real>("thermal_conductivity")),
-
     _input_specific_heat(getParam<Real>("specific_heat")),
-   
-
     // Declare two material properties by getting a reference from the MOOSE Material system
     _density(declareADProperty<Real>("density")),
     _thermal_conductivity(declareADProperty<Real>("thermal_conductivity")),
@@ -55,7 +52,7 @@ PackedColumn::PackedColumn(const InputParameters & parameters)
 }
 
 void
-PackedColumn::computeQpProperties()
+fuel::computeQpProperties()
 {
   // From the paper: Table 1
 

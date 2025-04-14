@@ -30,6 +30,11 @@ press = 10e5 # Pa
     order = CONSTANT
     block = core_chan
   []
+  [T_wall]
+    family = LAGRANGE
+    order = FIRST
+    block = core_chan
+  []
 []
 [AuxKernels]
   [hw]
@@ -56,9 +61,10 @@ press = 10e5 # Pa
     fp = he
   []
   [core_bc]
-    type=HeatTransferFromSpecifiedTemperature1Phase
+    type=HeatTransferFromExternalAppTemperature1Phase
     flow_channel= 'core_chan'
-    T_wall= 500
+    T_ext= T_wall
+    P_hf=0.0314
   []
   [outlet]
     type = Outlet1Phase
@@ -93,48 +99,6 @@ press = 10e5 # Pa
     block = core_chan
     P_hf = 0.0314
   []
-  [T_in_8]
-    type = PointValue
-    variable = T
-    point='0 0 0.08'
-    execute_on = 'INITIAL TIMESTEP_END'
-  []  
-  [T_in_6]
-    type = PointValue
-    variable = T
-    point='0 0 0.06'
-    execute_on = 'INITIAL TIMESTEP_END'
-  [] 
-  [T_in_0]
-    type = PointValue
-    variable = T
-    point='0 0 0'
-    execute_on = 'INITIAL TIMESTEP_END'
-  []
-  [T_in_4]
-    type = PointValue
-    variable = T
-    point='0 0 0.04'
-    execute_on = 'INITIAL TIMESTEP_END'
-  []
-  [T_in_25]
-    type = PointValue
-    variable = T
-    point='0 0 0.025'
-    execute_on = 'INITIAL TIMESTEP_END'
-  []
-  [T_in_3]
-    type = PointValue
-    variable = T
-    point='0 0 0.03'
-    execute_on = 'INITIAL TIMESTEP_END'
-  [] 
-  [T_in_2]
-    type = PointValue
-    variable = T
-    point='0 0 0.02'
-    execute_on = 'INITIAL TIMESTEP_END'
-  []
   [average]
     type = ElementAverageValue
     variable = T
@@ -156,8 +120,8 @@ press = 10e5 # Pa
   solve_type = PJFNK
   line_search = basic
   start_time = 0
-  end_time =0.1
-  dt = 0.001
+  end_time =5
+  dt = 0.01
   dtmin=1e-4
   petsc_options_iname = '-pc_type'
   petsc_options_value = 'lu'

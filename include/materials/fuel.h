@@ -17,12 +17,11 @@
  * Their job is to declare properties for use by other objects in the
  * calculation such as Kernels and BoundaryConditions.
  */
-class PackedColumn : public Material
+class fuel : public Material
 {
 public:
   static InputParameters validParams();
-
-  PackedColumn(const InputParameters & parameters);
+   fuel(const InputParameters & parameters);
 
 protected:
   /// Necessary override. This is where the values of the properties are computed.
@@ -33,10 +32,7 @@ protected:
   /// Value of viscosity from the input file
   const Real & _input_thermal_conductivity;
   const Real & _input_specific_heat;
-
-  
-
-  /// The permeability (K) computed based on the radius (mm)
+/// The permeability (K) computed based on the radius (mm)
   ADMaterialProperty<Real> & _density;
   /// The viscosity of the fluid (mu)
   ADMaterialProperty<Real> & _thermal_conductivity;

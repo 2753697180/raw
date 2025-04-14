@@ -1,5 +1,5 @@
 [Mesh]
-  file = test2.e
+  file = gas.e
 []
 
 [Variables]
@@ -31,6 +31,7 @@
     type = source
     variable = T
     kappa = -22500000
+    block = '1'
   []
   [heat_conduction_time_derivative]
     type = ADHeatConductionTimeDerivative
@@ -42,12 +43,12 @@
   [heat_q]
     type = NeumannBC
     variable = T
-    boundary = '1'
+    boundary = '13'
     value = 0 # (q)
   []
   [uo]
     type = CoupledConvectiveHeatFluxBC
-    boundary = '2'
+    boundary = '1'
     variable = T
     htc = 'htcp'
     T_infinity = 'T_fluid'
@@ -87,6 +88,7 @@
     type = TransientMultiApp
     input_files = 'flowm.i'
     execute_on = 'timestep_end INITIAL'
+    sub_cycling = true
   []
 []
 
@@ -101,9 +103,8 @@
     userobject = T_wall
   []
 []
-
 [Executioner]
-  # fixed_point_max_its = 10
+  fixed_point_max_its = 10
   type = Transient
   solve_type = PJFNK
   automatic_scaling = true
@@ -116,12 +117,10 @@
   steady_state_tolerance = 1e-5
   steady_state_detection = true
 []
-
 [Outputs]
   exodus = true
   file_base = 0304
 []
-
 [Transfers]
   [T_fluid]
     type = MultiAppGeneralFieldNearestLocationTransfer
@@ -130,6 +129,7 @@
     variable = 'T_fluid'
     execute_on = 'timestep_end INITIAL'
     num_nearest_points = 2
+    from_blocks = core_chan
   []
   [htc]
     type = MultiAppGeneralFieldNearestLocationTransfer

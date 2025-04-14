@@ -19,7 +19,6 @@ press = 1e5 # Pa
   scaling_factor_rhowV = 1e-2
   scaling_factor_rhoEV = 1e-4
 []
-
 [FluidProperties]
   [he]
     type = IdealGasFluidProperties
@@ -39,6 +38,11 @@ press = 1e5 # Pa
   [Hw]
     family = MONOMIAL
     order = CONSTANT
+    block =' core1 core2 core3 core4 core5 core6 core7 core8 core9 core10 core11 core12'
+  []
+  [T_wall]
+    family = LAGRANGE
+    order = FIRST
     block =' core1 core2 core3 core4 core5 core6 core7 core8 core9 core10 core11 core12'
   []
 []
@@ -63,7 +67,7 @@ press = 1e5 # Pa
     length = 0.5
     n_elems = 15
     A =3.14e-4 
-    D_h = 6.283e-2
+    D_h = 0.02
   []
   [core1]
     type = FlowChannel1Phase
@@ -72,7 +76,7 @@ press = 1e5 # Pa
     length = 0.55
     n_elems = 15
     A = 1.9635e-5
-    D_h = 1.5707e-2
+    D_h = 0.005
   []
   [core2]
     type = FlowChannel1Phase
@@ -81,7 +85,7 @@ press = 1e5 # Pa
     length = 0.55
     n_elems = 15
     A = 1.9635e-5
-    D_h = 1.5707e-2
+    D_h = 0.005
   []
   [core3]
     type = FlowChannel1Phase
@@ -90,7 +94,7 @@ press = 1e5 # Pa
     length = 0.55
     n_elems = 15
     A = 1.9635e-5
-    D_h = 1.5707e-2
+    D_h = 0.005
   []
   [core4]
     type = FlowChannel1Phase
@@ -99,7 +103,7 @@ press = 1e5 # Pa
     length = 0.55
     n_elems = 15
     A = 1.9635e-5
-    D_h = 1.5707e-2
+    D_h = 0.005
   []
   [core5]
     type = FlowChannel1Phase
@@ -108,7 +112,7 @@ press = 1e5 # Pa
     length = 0.55
     n_elems = 15
     A = 1.9635e-5
-    D_h = 1.5707e-2
+    D_h = 0.005
   []
   [core6]
     type = FlowChannel1Phase
@@ -117,7 +121,7 @@ press = 1e5 # Pa
     length = 0.55
     n_elems = 15
     A = 1.9635e-5
-    D_h = 1.5707e-2
+    D_h = 0.005
   []
   [core7]
     type = FlowChannel1Phase
@@ -126,7 +130,7 @@ press = 1e5 # Pa
     length = 0.55
     n_elems = 15
     A = 1.9635e-5
-    D_h = 1.5707e-2
+    D_h = 0.005
   []
   [core8]
     type = FlowChannel1Phase
@@ -135,7 +139,7 @@ press = 1e5 # Pa
     length = 0.55
     n_elems = 15
     A = 1.9635e-5
-    D_h = 1.5707e-2
+    D_h = 0.005
   []
   [core9]
     type = FlowChannel1Phase
@@ -144,7 +148,7 @@ press = 1e5 # Pa
     length = 0.55
     n_elems = 15
     A = 1.9635e-5
-    D_h = 1.5707e-2
+    D_h = 0.005
   []
   [core10]
     type = FlowChannel1Phase
@@ -153,7 +157,7 @@ press = 1e5 # Pa
     length = 0.55
     n_elems = 15
     A = 1.9635e-5
-    D_h = 1.5707e-2
+    D_h = 0.005
   []
   [core11]
     type = FlowChannel1Phase
@@ -162,7 +166,7 @@ press = 1e5 # Pa
     length = 0.55
     n_elems = 15
     A = 1.9635e-5
-    D_h = 1.5707e-2
+    D_h = 0.005
   []
   [core12]
     type = FlowChannel1Phase
@@ -171,7 +175,7 @@ press = 1e5 # Pa
     length = 0.55
     n_elems = 15
     A = 1.9635e-5
-    D_h = 1.5707e-2
+    D_h = 0.005
   []
   [jct1]
     type = VolumeJunction1Phase
@@ -187,7 +191,7 @@ press = 1e5 # Pa
     length = 0.5
     n_elems = 15
     A =3.14e-4 
-    D_h = 6.283e-2
+    D_h = 0.02
   []
   [jct2]
     type =VolumeJunction1Phase
@@ -197,64 +201,88 @@ press = 1e5 # Pa
     use_scalar_variables = false  
   []
   [core_bc1]
-    type=HeatTransferFromSpecifiedTemperature1Phase
+    type=HeatTransferFromExternalAppTemperature1Phase
     flow_channel= 'core1'
-    T_wall= 500
+    initial_T_wall = 300
+    T_ext= T_wall
+    P_hf=1.9635e-5
   []
   [core_bc2]
-    type=HeatTransferFromSpecifiedTemperature1Phase
+    type=HeatTransferFromExternalAppTemperature1Phase
     flow_channel= 'core2'
-    T_wall= 500
+    initial_T_wall = 300
+    T_ext= T_wall
+    P_hf=1.9635e-5
   []
   [core_bc3]
-    type=HeatTransferFromSpecifiedTemperature1Phase
+    type=HeatTransferFromExternalAppTemperature1Phase
     flow_channel= 'core3'
-    T_wall= 500
+    initial_T_wall = 300
+    T_ext= T_wall
+    P_hf=1.9635e-5
   []
   [core_bc4]
-    type=HeatTransferFromSpecifiedTemperature1Phase
+    type=HeatTransferFromExternalAppTemperature1Phase
     flow_channel= 'core4'
-    T_wall= 500
+    initial_T_wall = 300
+    T_ext= T_wall
+    P_hf=1.9635e-5
   []
   [core_bc5]
-    type=HeatTransferFromSpecifiedTemperature1Phase
+    type=HeatTransferFromExternalAppTemperature1Phase
     flow_channel= 'core5'
-    T_wall= 500
+    initial_T_wall = 300
+    T_ext= T_wall
+    P_hf=1.9635e-5
   []
   [core_bc6]
-    type=HeatTransferFromSpecifiedTemperature1Phase
+    type=HeatTransferFromExternalAppTemperature1Phase
     flow_channel= 'core6'
-    T_wall= 500
+    initial_T_wall = 300
+    T_ext= T_wall
+    P_hf=1.9635e-5
   []
   [core_bc7]
-    type=HeatTransferFromSpecifiedTemperature1Phase
+    type=HeatTransferFromExternalAppTemperature1Phase
     flow_channel= 'core7'
-    T_wall= 500
+    initial_T_wall = 300
+    T_ext= T_wall
+    P_hf=1.9635e-5
   []
   [core_bc8]
-    type=HeatTransferFromSpecifiedTemperature1Phase
+    type=HeatTransferFromExternalAppTemperature1Phase
     flow_channel= 'core8'
-    T_wall= 500
+    initial_T_wall = 300
+    T_ext= T_wall
+    P_hf=1.9635e-5
   []
   [core_bc9]
-    type=HeatTransferFromSpecifiedTemperature1Phase
+    type=HeatTransferFromExternalAppTemperature1Phase
     flow_channel= 'core9'
-    T_wall= 500
+    initial_T_wall = 300
+    T_ext= T_wall
+    P_hf=1.9635e-5
   []
   [core_bc10]
-    type=HeatTransferFromSpecifiedTemperature1Phase
+    type=HeatTransferFromExternalAppTemperature1Phase
     flow_channel= 'core10'
-    T_wall= 500
+    initial_T_wall = 300
+    T_ext= T_wall
+    P_hf=1.9635e-5
   []
   [core_bc11]
-    type=HeatTransferFromSpecifiedTemperature1Phase
+    type=HeatTransferFromExternalAppTemperature1Phase
     flow_channel= 'core11'
-    T_wall= 500
+    initial_T_wall = 300
+    T_ext= T_wall
+    P_hf=1.9635e-5
   []
   [core_bc12]
-    type=HeatTransferFromSpecifiedTemperature1Phase
+    type=HeatTransferFromExternalAppTemperature1Phase
     flow_channel= 'core12'
-    T_wall= 500
+    initial_T_wall = 300
+    T_ext= T_wall
+    P_hf=1.9635e-5
   []
   [outlet]
     type = Outlet1Phase
@@ -306,7 +334,7 @@ press = 1e5 # Pa
   line_search = basic
   start_time = 0
   end_time =0.1
-  dt = 0.001
+  dt = 0.01
   dtmin=1e-4
   petsc_options_iname = '-pc_type'
   petsc_options_value = 'lu'

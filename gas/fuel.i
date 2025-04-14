@@ -106,11 +106,6 @@
     #density = 1.8e-6 # 石墨基体的密度 (kg/m^3)，替换为实际值
     block = '2'  # 应用于块 ID 为 2 的区域，即石墨基体区域
  [../]
- [./specific_heat_material]
-    type = GenericConstantMaterial
-    prop_names = 'heat_transfer_coefficient T_infinity'  # 定义比热容的属性名
-    prop_values = '50 300' # 设置比热容的值 (J/kg·K)，这里使用的是一个常量
-  [../]
 [] 
 
 [Problem]

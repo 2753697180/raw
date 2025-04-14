@@ -1,0 +1,16 @@
+[Functions]
+  [heat_source1]
+    type = ParsedFunction
+    expression = '
+      if(z < 0.05, 2.4e6,
+        if(z < 0.1, 2.7e6,
+         if(z < 0.15, 3e6,
+           if(z < 0.2, 3.255e6,
+              if(z < 0.25, 3.36e6,
+                if(z < 0.3, 3.57e6,
+                   if(z < 0.35, 3.57e6,
+                     if(z < 0.4, 3.36e6,
+      if(z < 0.45, 3.255e6,
+      if(z < 0.55, 2.7e6, 2.4e6))))))))))'
+  []
+[]
